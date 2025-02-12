@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AccessCardManager extends AccessControl {
     private Map<String, String> accessCards = new HashMap<>();

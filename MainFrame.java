@@ -3,60 +3,47 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
-    private CardLayout cardLayout = new CardLayout();
-    private JPanel mainPanel = new JPanel(cardLayout);
-    private JTextField cardIdField = new JTextField();
-    private JTextArea auditTrailTextArea = new JTextArea();
-    private AccessCardManager cardManager = new AccessCardManager();
+    private JTextField cardIdField;
+    private JTextArea auditTrailTextArea;
+    private AccessCardManager cardManager;
 
     public MainFrame() {
+        cardManager = new AccessCardManager();
+
         setTitle("Access Control System");
-        setSize(500, 400);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        mainPanel.add(createPanel("Welcome", new String[]{"Admin", "Customer"}, e -> cardLayout.show(mainPanel, "IDInput")), "Welcome");
-        mainPanel.add(createPanel("Enter ID Card", new String[]{"Submit"}, e -> cardManager.accessAttempt(cardIdField.getText(), auditTrailTextArea)), "IDInput");
-        mainPanel.add(createPanel("Card ID", new String[]{"Add Card", "Modify Card", "Revoke Card", "Access Attempt"}, this::handleCardActions), "Admin");
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 2));
 
-        add(mainPanel);
-        cardLayout.show(mainPanel, "Welcome");
-    }
+        panel.add(new JLabel("Card ID:"));
+        cardIdField = new JTextField();
+        panel.add(cardIdField);
 
-    private JPanel createPanel(String labelText, String[] buttons, ActionListener action) {
-        JPanel panel = new JPanel(new GridLayout(0, 1, 10, 10));
-        panel.add(new JLabel(labelText, SwingConstants.CENTER));
-        if (labelText.equals("Enter ID Card")) panel.add(cardIdField);
-        for (String text : buttons) {
-            JButton button = new JButton(text);
-            button.addActionListener(action);
-            panel.add(button);
-        }
-        return panel;
-    }
+        JButton addButton = new JButton("Add Card");
+        JButton modifyButton = new JButton("Modify Card");
+        JButton revokeButton = new JButton("Revoke Card");
+        JButton accessButton = new JButton("Access Attempt");
 
-    private void handleCardActions(java.awt.event.ActionEvent e) {
-        String action = ((JButton) e.getSource()).getText();
-        String cardId = cardIdField.getText();
-        if (cardId.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a Card ID first!");
-            return;
-        }
+        panel.add(addButton);
+        panel.add(modifyButton);
+        panel.add(revokeButton);
+        panel.add(accessButton);
 
-        switch (action) {
-            case "Add Card":
-                cardManager.addCard(cardId);
-                break;
-            case "Modify Card":
-                cardManager.modifyCard(cardId);
-                break;
-            case "Revoke Card":
-                cardManager.revokeCard(cardId);
-                break;
-            case "Access Attempt":
-                cardManager.accessAttempt(cardId, auditTrailTextArea);
-                break;
-        }
+        auditTrailTextArea = new JTextArea();
+        auditTrailTextArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(auditTrailTextArea);
+
+        add(panel, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Event listeners
+        addButton.addActionListener(e -> cardManager.addCard(cardIdField.getText()));
+        modifyButton.addActionListener(e -> cardManager.modifyCard(cardIdField.getText()));
+        revokeButton.addActionListener(e -> cardManager.revokeCard(cardIdField.getText()));
+        accessButton.addActionListener(e -> cardManager.accessAttempt(cardIdField.getText(), auditTrailTextArea));
     }
 
     public static void main(String[] args) {

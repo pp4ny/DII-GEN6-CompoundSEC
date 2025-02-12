@@ -22,3 +22,4 @@ abstract class AccessControl {
         return String.join("\n", auditTrail);
     }
 }
+

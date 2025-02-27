@@ -3,8 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
-    private JTextField cardIdField;
-    private JTextArea auditTrailTextArea;
     private AccessCardManager cardManager;
 
     public MainFrame() {

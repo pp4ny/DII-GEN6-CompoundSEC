@@ -6,6 +6,12 @@ import java.util.List;
 
 abstract class AccessControl {
     protected List<String> auditTrail = new ArrayList<>();
+    protected String cardId;
+    protected String roomName;
+    protected String floorName;
+    private String loginPassword;
+    protected LocalDateTime timestamp;
+    protected static List<String> accessLog = new ArrayList<>();
 
     // เมธอดบังคับให้คลาสลูกต้องมี
     public abstract void addCard(String cardId);

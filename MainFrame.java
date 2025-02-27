@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
     private AccessCardManager cardManager;
     private JTextField nameField;
     private JPasswordField passwordField;
+public class MainFrame extends JFrame {
+    private JTextField nameField ;
+    private JPasswordField passwordField ;
 
         cardManager = new AccessCardManager();
 
@@ -12,6 +15,10 @@ import java.awt.event.ActionListener;
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+    public MainFrame() {
+        setTitle("Login");
+        setSize(400, 250);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(5, 2));
@@ -44,6 +51,7 @@ import java.awt.event.ActionListener;
         modifyButton.addActionListener(e -> cardManager.modifyCard(cardIdField.getText()));
         revokeButton.addActionListener(e -> cardManager.revokeCard(cardIdField.getText()));
         accessButton.addActionListener(e -> cardManager.accessAttempt(cardIdField.getText(), auditTrailTextArea));
+        setVisible(true);
     }
 
     public boolean validateCard(String cardID, String password) {

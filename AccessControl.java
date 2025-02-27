@@ -25,11 +25,16 @@ abstract class AccessControl {
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         String log = timestamp + " - Card ID: " + cardId + " " + (granted ? "Access Granted" : "Access Denied");
         auditTrail.add(log);
+    public boolean verifyAccess() {
+        return true;
     }
 
     // เข้าถึง auditTrail ผ่าน method นี้เท่านั้น (Data Hiding)
     public String getAuditTrail() {
-        return String.join("\n", auditTrail);
+    public void logAccessAttempt(boolean isSuccess) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String logMessage = "Card ID: " + cardId + " - Floor: " + floorName + " - Room: " + roomName
+                + " at " + timestamp.format(formatter) + " - " + (isSuccess ? "Access Granted" : "Access Denied");
+        accessLog.add(logMessage);
     }
-}
 

@@ -44,6 +44,16 @@ public class MainFrame extends JFrame {
         accessButton.addActionListener(e -> cardManager.accessAttempt(cardIdField.getText(), auditTrailTextArea));
     }
 
+    private void verifyLogin() {
+        String name = nameField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+        if (validateCard(name, password)) {
+            System.out.println("Login Successful for: " + name);
+            new RoomAccessControl(name, password); // เปิดหน้าจัดการการเข้าห้อง
+            dispose(); // ปิดหน้าต่างล็อกอิน
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid Card ID or Password", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new MainFrame().setVisible(true));
     }

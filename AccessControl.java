@@ -11,6 +11,12 @@ abstract class AccessControl {
     protected String floorName;
     private String loginPassword;
     protected LocalDateTime timestamp;
+public class AccessControl {
+    protected String cardId ;
+    protected String roomName ;
+    protected String floorName ;
+    private String loginPassword ;
+    protected LocalDateTime timestamp ;
     protected static List<String> accessLog = new ArrayList<>();
 
     // เมธอดบังคับให้คลาสลูกต้องมี
@@ -19,6 +25,13 @@ abstract class AccessControl {
     public abstract void modifyCard(String cardId);
 
     public abstract void revokeCard(String cardId);
+    public AccessControl(String cardId, String loginPassword, String floorName, String roomName) {
+        this.cardId = cardId;
+        this.roomName = roomName;
+        this.floorName = floorName;
+        this.loginPassword = loginPassword;
+        this.timestamp = LocalDateTime.now();
+    }
 
     // เมธอดบันทึกการพยายามเข้าออก >> ซ่อนรายละเอียดการบันทึก log
     void logAccessAttempt(String cardId, boolean granted) {
@@ -27,6 +40,8 @@ abstract class AccessControl {
         auditTrail.add(log);
     public boolean verifyAccess() {
         return true;
+    public boolean verifyAccess()  {
+        return true ;
     }
 
     // เข้าถึง auditTrail ผ่าน method นี้เท่านั้น (Data Hiding)

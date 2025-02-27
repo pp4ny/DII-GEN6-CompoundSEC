@@ -1,13 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-class RoomAccessControl extends JFrame {
-    private String username;
-    private String userPassword;
 
-    public RoomAccessControl(String username, String userPassword) {
-        this.username = username;
-        this.userPassword = userPassword;
 
         setTitle("Select Floor");
         setSize(400, 250);
@@ -46,11 +40,8 @@ class RoomAccessControl extends JFrame {
         setVisible(true);
     }
 
-    public RoomAccessControl(AccessFrame accessFrame, String cardId) {
     }
 
-    public RoomAccessControl(AccessControl accessControl, String cardId) {
-    }
 
     private void requestPassword(String floorName) {
         String inputPassword = JOptionPane.showInputDialog(this, "Enter password for " + floorName);

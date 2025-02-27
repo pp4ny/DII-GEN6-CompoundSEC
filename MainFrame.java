@@ -2,10 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class MainFrame extends JFrame {
     private AccessCardManager cardManager;
+    private JTextField nameField;
+    private JPasswordField passwordField;
 
-    public MainFrame() {
         cardManager = new AccessCardManager();
 
         setTitle("Access Control System");
@@ -29,6 +29,7 @@ public class MainFrame extends JFrame {
         panel.add(modifyButton);
         panel.add(revokeButton);
         panel.add(accessButton);
+        nameField = new JTextField(15);
 
         auditTrailTextArea = new JTextArea();
         auditTrailTextArea.setEditable(false);
@@ -36,6 +37,7 @@ public class MainFrame extends JFrame {
 
         add(panel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+        passwordField = new JPasswordField(15);
 
         // Event listeners
         addButton.addActionListener(e -> cardManager.addCard(cardIdField.getText()));
@@ -44,6 +46,27 @@ public class MainFrame extends JFrame {
         accessButton.addActionListener(e -> cardManager.accessAttempt(cardIdField.getText(), auditTrailTextArea));
     }
 
+    public boolean validateCard(String cardID, String password) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("cards.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue; // ข้ามบรรทัดว่าง
+
+                String[] cardData = line.split("\\s+"); // แยกข้อมูลด้วยช่องว่าง (รองรับหลายช่องว่าง)
+                if (cardData.length == 2) {
+                    if (cardData[0].equals(cardID) && cardData[1].equals(password)) {
+                        return true; // ถ้าตรงกันให้ล็อกอินผ่าน
+                    }
+                } else {
+                    System.out.println("Invalid line format: " + line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading card data: " + e.getMessage());
+        }
+        return false; // ถ้าไม่มีข้อมูลตรงกันให้ล็อกอินไม่ผ่าน
+    }
     private void verifyLogin() {
         String name = nameField.getText().trim();
         String password = new String(passwordField.getPassword()).trim();

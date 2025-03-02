@@ -61,8 +61,4 @@ public class AccessFrame extends JFrame {
         this.dispose();
         new MainFrame().setVisible(true);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AccessFrame("User", "Password").setVisible(true));
-    }
 }

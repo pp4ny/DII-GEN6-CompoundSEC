@@ -114,6 +114,7 @@ public class CardManagement extends JFrame {
             JOptionPane.showMessageDialog(this, "Card ID not found.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     public static void openCardManagement(JFrame parentFrame) {
         CardManagement cardManagement = CardManagement.getInstance(); // ใช้ Singleton
         cardManagement.setParentFrame(parentFrame);  // ส่ง parentFrame ไปที่ CardManagement

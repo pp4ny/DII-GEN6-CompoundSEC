@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-class RoomAccessControl extends JFrame  {
+public class RoomAccessControl extends JFrame  {
     private String username ;
     private String userPassword ;
 

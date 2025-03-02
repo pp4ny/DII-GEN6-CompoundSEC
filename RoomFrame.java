@@ -62,31 +62,40 @@ public class RoomFrame extends JFrame {
     }
 
     private void checkAccess(String username, String room, String floorName) {
+        boolean isAccessGranted = true;  // กำหนดค่าเริ่มต้นเป็นอนุญาต
 
+        // ตรวจสอบสิทธิ์การเข้าถึงห้องหรือชั้น
         if (accessRestrictions.containsKey(username)) {
             String[] restrictedFloors = accessRestrictions.get(username);
-
             if (contains(restrictedFloors, floorName)) {
+                isAccessGranted = false;  // ปฏิเสธการเข้าถึงชั้น
                 JOptionPane.showMessageDialog(this, "Access Denied to " + floorName, "Error", JOptionPane.ERROR_MESSAGE);
-                return;
             }
         }
 
+        // ตรวจสอบห้องที่จำกัด
         String[] restrictions = accessRestrictions.getOrDefault(username, new String[]{});
         for (String restrictedRoom : restrictions) {
             if (room.equals(restrictedRoom)) {
+                isAccessGranted = false;  // ปฏิเสธการเข้าถึงห้อง
                 JOptionPane.showMessageDialog(this, "Access Denied to " + room, "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                break;
             }
         }
 
-        if ("Staff Area".equals(room)) {
-            new AccessCardManager(username, this);  // Pass this as the parent frame
-        } else {
-            JOptionPane.showMessageDialog(this, username + " accessed " + room);
+        // บันทึกการเข้าถึง
+        AccessControl accessControl = new AccessControl(username, "password", floorName, room);
+        accessControl.logAccessAttempt(isAccessGranted);  // บันทึกการเข้าถึงไม่ว่าจะอนุญาตหรือไม่
+
+        // แสดงข้อความการเข้าถึง
+        if (isAccessGranted) {
+            if ("Staff Area".equals(room)) {
+                new AccessCardManager(username, this);  // เปิดหน้าจัดการบัตรเมื่อเข้าพื้นที่ Staff Area
+            } else {
+                JOptionPane.showMessageDialog(this, username + " accessed " + room);
+            }
         }
     }
-
     private boolean contains(String[] array, String value) {
         for (String element : array) {
             if (element.equals(value)) {

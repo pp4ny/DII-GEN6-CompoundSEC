@@ -123,8 +123,4 @@ public class CardManagement extends JFrame {
     public void setParentFrame(JFrame parentFrame) {
         this.parentFrame = parentFrame;  // รับ parentFrame จากภายนอก
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> CardManagement.getInstance().setVisible(true));
-    }
 }
